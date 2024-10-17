@@ -1,0 +1,186 @@
+<!-- Create a login based calculator, User will signup and during signup they have to choose the operator like
+1. Addition
+2. Substraction
+3. Multiplication -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login-based Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Signup Form -->
+        <h2>Signup</h2>
+        <div id="signupForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" placeholder="Enter username">
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter password">
+
+            <label for="operator">Choose Operator:</label>
+            <select id="operator">
+                <option value="add">Addition</option>
+                <option value="sub">Subtraction</option>
+                <option value="mul">Multiplication</option>
+            </select>
+
+            <button onclick="signup()">Signup</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="hidden">
+            <h2>Login</h2>
+            <label for="loginUsername">Username:</label>
+            <input type="text" id="loginUsername" placeholder="Enter username">
+
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" placeholder="Enter password">
+
+            <button onclick="login()">Login</button>
+        </div>
+
+        <!-- Calculator Form -->
+        <div id="calculator" class="hidden">
+            <h2 id="welcomeMessage">Welcome!</h2>
+
+            <label for="input1">Input 1:</label>
+            <input type="text" id="input1" placeholder="Enter first number">
+
+            <label for="input2">Input 2:</label>
+            <input type="text" id="input2" placeholder="Enter second number">
+
+            <button onclick="calculate()">Submit</button>
+
+            <h3 id="result"></h3>
+        </div>
+    </div>
+
+    <script>
+        let user = {
+            username: "",
+            password: "",
+            operator: ""
+        };
+
+        // Signup function
+        function signup() {
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            let operator = document.getElementById('operator').value;
+
+            if (username && password && operator) {
+                user.username = username;
+                user.password = password;
+                user.operator = operator;
+
+                alert("You have registered for " + getOperatorName(operator) + ". Welcome, " + username + "!");
+                document.getElementById('signupForm').classList.add('hidden');
+                document.getElementById('loginForm').classList.remove('hidden');
+            } else {
+                alert("Please fill in all the fields!");
+            }
+        }
+
+        // Login function
+        function login() {
+            let loginUsername = document.getElementById('loginUsername').value;
+            let loginPassword = document.getElementById('loginPassword').value;
+
+            if (loginUsername === user.username && loginPassword === user.password) {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('calculator').classList.remove('hidden');
+                document.getElementById('welcomeMessage').innerText = "Welcome, " + user.username + "! You registered for " + getOperatorName(user.operator);
+            } else {
+                alert("Invalid credentials. Please try again.");
+            }
+        }
+
+        // Function to perform calculation based on selected operator
+        function calculate() {
+            let input1 = parseFloat(document.getElementById('input1').value);
+            let input2 = parseFloat(document.getElementById('input2').value);
+            let result = 0;
+
+            if (isNaN(input1) || isNaN(input2)) {
+                alert("Please enter valid numbers.");
+                return;
+            }
+
+            switch (user.operator) {
+                case 'add':
+                    result = input1 + input2;
+                    break;
+                case 'sub':
+                    result = input1 - input2;
+                    break;
+                case 'mul':
+                    result = input1 * input2;
+                    break;
+            }
+
+            document.getElementById('result').innerText = "Result: " + result;
+        }
+
+        // Function to get the operator name
+        function getOperatorName(operator) {
+            switch (operator) {
+                case 'add':
+                    return 'Addition';
+                case 'sub':
+                    return 'Subtraction';
+                case 'mul':
+                    return 'Multiplication';
+                default:
+                    return '';
+            }
+        }
+    </script>
+
+</body>
+</html>
